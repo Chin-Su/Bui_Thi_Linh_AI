@@ -9,7 +9,6 @@ package PuzzleGame;
  * @author viet1
  */
 
-import java.io.IOException;
 import java.util.Arrays;
 // Class dùng để mô tả một trạng thái
 public class State implements Comparable<State>, Cloneable{ // Khai báo class thực hiện interface clone đối tượng, định nghĩa so sánh để làm việc với hàng đợi
@@ -74,9 +73,9 @@ public class State implements Comparable<State>, Cloneable{ // Khai báo class t
         for(int i = 0; i < 9; ++ i){
             if(this.data[i] != s[i]) // Truyền vô trạng thái đích nhưng khum có sài : >>> ☺
 //                ++ count; // Nè là để đếm số ô sai so với trạng thái đích nè
-                count += Math.abs(this.data[i] - i); // Nè là đếm độ sai của vị trí ô hiện tại so với trạng thái đích
+//                count += Math.abs(this.data[i] - i); // Nè là đếm độ sai của vị trí ô hiện tại so với trạng thái đích
                 // Ví dụ số 1 ở ô số 8, thì nó phải ở ô số 1 mới đúng, độ sai của nó là 8 - 1;
-//                count += Math.abs(data[i] - i) + Math.abs((data[i] - data[i] % 3) / 3 + data[i] % 3 - ((i - i % 3) / 3 + i % 3));
+                count += Math.abs(data[i] - i) + Math.abs((data[i] - data[i] % 3) / 3 + data[i] % 3 - ((i - i % 3) / 3 + i % 3));
                 // Hàm này là sử dụng độ sai và số bước di chuyển lý tưởng của mỗi ô để về vị trí ban đầu
         }
         return count; // Trả về giá trị đánh giá

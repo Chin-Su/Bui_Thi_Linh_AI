@@ -4,6 +4,9 @@
  */
 package PuzzleGame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /**
  *
@@ -63,13 +67,14 @@ public class PuzzleGame extends javax.swing.JFrame {
         btnPrie = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        timeCounter = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         resText = new javax.swing.JLabel();
         resText1 = new javax.swing.JLabel();
         titleCheck = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         btnReplay = new javax.swing.JButton();
-        btnAutoComplete = new javax.swing.JButton();
+        availableArray = new javax.swing.JButton();
         btnBeFS = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         btnStart = new javax.swing.JButton();
@@ -415,15 +420,26 @@ public class PuzzleGame extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel4.setForeground(new java.awt.Color(203, 218, 196));
 
+        timeCounter.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        timeCounter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timeCounter.setText("00 : 00 : 00");
+        timeCounter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 238, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(timeCounter, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 58, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(timeCounter, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 220, 240, 60));
@@ -484,12 +500,12 @@ public class PuzzleGame extends javax.swing.JFrame {
             }
         });
 
-        btnAutoComplete.setFont(new java.awt.Font("Snap ITC", 0, 14)); // NOI18N
-        btnAutoComplete.setText("AutoFi");
-        btnAutoComplete.setActionCommand("BFS\nSolution");
-        btnAutoComplete.addActionListener(new java.awt.event.ActionListener() {
+        availableArray.setFont(new java.awt.Font("Snap ITC", 0, 14)); // NOI18N
+        availableArray.setText("Available");
+        availableArray.setActionCommand("BFS\nSolution");
+        availableArray.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAutoCompleteActionPerformed(evt);
+                availableArrayActionPerformed(evt);
             }
         });
 
@@ -519,7 +535,7 @@ public class PuzzleGame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAutoComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(availableArray, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBeFS, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -532,7 +548,7 @@ public class PuzzleGame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAutoComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(availableArray, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBeFS, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
@@ -739,6 +755,7 @@ public class PuzzleGame extends javax.swing.JFrame {
             // Nếu đúng thì hiển thị lê hộp thông báo chiến thắng
             JOptionPane.showMessageDialog(this, "You Win!", "Congratulation!", JOptionPane.INFORMATION_MESSAGE);
             btnReplay.setText("New Game"); // Thay đổi tên nút replay thành new game
+            timer.stop(); // Dừng trình đếm thời gian
         }
         
         ++ Counter; // Nếu chưa win thì tăng lần di chuyển lên 1
@@ -759,11 +776,14 @@ public class PuzzleGame extends javax.swing.JFrame {
     private void btnReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReplayActionPerformed
         // TODO add your handling code here:
         // Khi nhấn replay thì đưa hết giá trị cũng như giao diện của game về lúc mới mở game
+        second = 0;
+        minute = 0;
+        hour = 0;
         resText.setText("");
         titleCheck.setVisible(false);
         resText1.setText("");
-        solution = new ArrayList<State>(); // Khởi tạo lại giải pháp mới
-        tracing = new ArrayList<State>(); // Khởi tạo lại mảng truy vết mới
+        solution = new ArrayList<>(); // Khởi tạo lại giải pháp mới
+        tracing = new ArrayList<>(); // Khởi tạo lại mảng truy vết mới
         steps = 0; // Gán lại bước đi bằng 0
         btnStart.setEnabled(true);
         if(btnReplay.getText().equals("New Game")){ // Kiểm tra nếu như đang là new game thì đổi lại thành replay
@@ -789,11 +809,82 @@ public class PuzzleGame extends javax.swing.JFrame {
     
     
     /***************************************************************************/
-    //====================== Sự kiện nút auto complete =========================//
+    //========================= Sự kiện nút available =========================//
     /***************************************************************************/
-    private void btnAutoCompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoCompleteActionPerformed
+    private void availableArrayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_availableArrayActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAutoCompleteActionPerformed
+        // Nè là sinh ra các mảng có sẵn nhìn cái thuật toán cho dễ á, chứ mấy kia random lâu ẻ : ((
+        second = 0;
+        minute = 0;
+        hour = 0;
+        resText.setText("");
+        titleCheck.setVisible(false);
+        resText1.setText("");
+        solution = new ArrayList<>(); // Khởi tạo lại giải pháp mới
+        tracing = new ArrayList<>(); // Khởi tạo lại mảng truy vết mới
+        steps = 0; // Gán lại bước đi bằng 0
+        btnStart.setEnabled(true);
+        if(btnReplay.getText().equals("New Game")){ // Kiểm tra nếu như đang là new game thì đổi lại thành replay
+            btnReplay.setText("Replay");
+        }
+        
+        /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!*/
+        // ========================= Lấy random mảng ========================= //
+        /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+        Integer[] bNum = new AvailableArray().ranD();
+        if(bNum[0] == 9)
+            btn1.setText("");
+        else
+            btn1.setText(bNum[0].toString());
+        if(bNum[1] == 9)
+            btn2.setText("");
+        else
+            btn2.setText(bNum[1].toString());
+        if(bNum[2] == 9)
+            btn3.setText("");
+        else
+            btn3.setText(bNum[2].toString());
+        if(bNum[3] == 9)
+            btn4.setText("");
+        else
+            btn4.setText(bNum[3].toString());
+        if(bNum[4] == 9)
+            btn5.setText("");
+        else
+            btn5.setText(bNum[4].toString());
+        if(bNum[5] == 9)
+            btn6.setText("");
+        else
+            btn6.setText(bNum[5].toString());
+        if(bNum[6] == 9)
+            btn7.setText("");
+        else
+            btn7.setText(bNum[6].toString());
+        if(bNum[7] == 9)
+            btn8.setText("");
+        else
+            btn8.setText(bNum[7].toString());
+        if(bNum[8] == 9)
+            btn9.setText("");
+        else
+            btn9.setText(bNum[8].toString());
+        /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+        
+        Counter = 0; // Thiết lập lại bộ đếm bước đi bằng 0
+        jlbNumberOfClicks.setText("0"); // Thiết lập lại hiển thị bước đi bằng 0.
+        btnBeFS.setEnabled(false); // Không cho phép bấm nút giải toán khi chưa bắt đầu game
+        btn1.setEnabled(false); // Không cho các phím số di chuyển
+        btn2.setEnabled(false); // Không cho các phím số di chuyển
+        btn3.setEnabled(false); // Không cho các phím số di chuyển
+        btn4.setEnabled(false); // Không cho các phím số di chuyển
+        btn5.setEnabled(false); // Không cho các phím số di chuyển
+        btn6.setEnabled(false); // Không cho các phím số di chuyển
+        btn7.setEnabled(false); // Không cho các phím số di chuyển
+        btn8.setEnabled(false); // Không cho các phím số di chuyển
+        btn9.setEnabled(false); // Không cho các phím số di chuyển
+        btnPrie.setEnabled(false); // Không cho các phím điều hướng di chuyển
+        btnNext.setEnabled(false); // Không cho các phím điều hướng di chuyển
+    }//GEN-LAST:event_availableArrayActionPerformed
     /***************************************************************************/
     
     
@@ -802,6 +893,7 @@ public class PuzzleGame extends javax.swing.JFrame {
     /***************************************************************************/
     private void btnBeFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeFSActionPerformed
         // TODO add your handling code here:
+        timer.stop();
         solution.clear(); // Xóa tất cả dữ liệu trong danh sách solution để không bị lấy lại dữ liệu cũ
         tracing.clear(); // Xóa tất cả các dữ liệu trong danh sách truy vết để khi chạy lại giải pháp không bị lấy lại dữ liệu cũ
         steps = 0; // Đưa lại số bước đã di chuyển bằng không
@@ -900,6 +992,39 @@ public class PuzzleGame extends javax.swing.JFrame {
     
     
     /***************************************************************************/
+    //======================== Trình đếm thời gian ============================//
+    /***************************************************************************/
+    int second; // Tạo biến đếm giây
+    int minute; // Tạo biến đếm phút
+    int hour; // Tạo biến đếm giờ
+    Timer timer; // Khai báo đối tượng timer để làm việc liên quan đến thời gian
+    String ddSecond, ddMinute, ddHour; // Tạo ra các biến để lưu lại format của giờ phút giây dạng 00 : 00 : 00
+    DecimalFormat dFormat = new DecimalFormat("00"); // Khai báo đối tượng để format lại định dạng của giờ phút giây
+    //=========================================================================//
+    public void counterTime(){ // Tạo hàm đếm thời gian
+        timer = new Timer(1000, new ActionListener(){ // Tạo mới một biến đếm thời gian với độ delay là 1s
+           @Override // ghi đè hành động
+           public void actionPerformed(ActionEvent e){ // Phương thức ghi đè
+               ++ second; // Tăng giây lên 1
+               if(second == 60){ // Kiểm tra nếu giây bằng 60
+                   second = 0; // Reset giây bằng 0
+                   ++ minute; // Tăng phút lên 1
+                   if(minute == 60){ // Kiểm tra nếu phút bằng 60
+                       minute = 0; // Reset phút bằng 0
+                       ++ hour; // Tăng giờ lên 1
+                   }
+               }
+               ddSecond = dFormat.format(second); // Format lại giây dưới dạng 00
+               ddMinute = dFormat.format(minute); // Format lại phút dưới dạng 00
+               ddHour = dFormat.format(hour); // Format lại giờ dưới dạng 00
+               timeCounter.setText(ddHour + " : " + ddMinute + " : " + ddSecond); // Hiển thị giờ phút giây lên màn hình
+           }
+        });
+    }
+    /***************************************************************************/
+    
+    
+    /***************************************************************************/
     //======================== Sự kiện nhấn nút start ==========================//
     /***************************************************************************/
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
@@ -916,6 +1041,11 @@ public class PuzzleGame extends javax.swing.JFrame {
         btn9.setEnabled(true);
         btnBeFS.setEnabled(true);
         btnStart.setEnabled(false);
+        second = 0;
+        minute = 0;
+        hour = 0;
+        counterTime();
+        timer.start();
     }//GEN-LAST:event_btnStartActionPerformed
     /***************************************************************************/
     
@@ -1076,6 +1206,7 @@ public class PuzzleGame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton availableArray;
     private javax.swing.JButton btn1;
     private javax.swing.JButton btn2;
     private javax.swing.JButton btn3;
@@ -1085,7 +1216,6 @@ public class PuzzleGame extends javax.swing.JFrame {
     private javax.swing.JButton btn7;
     private javax.swing.JButton btn8;
     private javax.swing.JButton btn9;
-    private javax.swing.JButton btnAutoComplete;
     private javax.swing.JButton btnBeFS;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNext;
@@ -1112,6 +1242,7 @@ public class PuzzleGame extends javax.swing.JFrame {
     private javax.swing.JLabel jlbNumberOfClicks;
     private javax.swing.JLabel resText;
     private javax.swing.JLabel resText1;
+    private javax.swing.JLabel timeCounter;
     private javax.swing.JLabel titleCheck;
     // End of variables declaration//GEN-END:variables
 }
