@@ -69,7 +69,7 @@ public class PuzzleGame extends javax.swing.JFrame {
         titleCheck = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         btnReplay = new javax.swing.JButton();
-        btnBFS = new javax.swing.JButton();
+        btnAutoComplete = new javax.swing.JButton();
         btnBeFS = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         btnStart = new javax.swing.JButton();
@@ -484,13 +484,12 @@ public class PuzzleGame extends javax.swing.JFrame {
             }
         });
 
-        btnBFS.setFont(new java.awt.Font("Snap ITC", 0, 14)); // NOI18N
-        btnBFS.setText("BFS-Sol");
-        btnBFS.setActionCommand("BFS\nSolution");
-        btnBFS.setEnabled(false);
-        btnBFS.addActionListener(new java.awt.event.ActionListener() {
+        btnAutoComplete.setFont(new java.awt.Font("Snap ITC", 0, 14)); // NOI18N
+        btnAutoComplete.setText("AutoFi");
+        btnAutoComplete.setActionCommand("BFS\nSolution");
+        btnAutoComplete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBFSActionPerformed(evt);
+                btnAutoCompleteActionPerformed(evt);
             }
         });
 
@@ -520,7 +519,7 @@ public class PuzzleGame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBFS, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAutoComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBeFS, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -533,7 +532,7 @@ public class PuzzleGame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBFS, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAutoComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBeFS, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
@@ -567,6 +566,12 @@ public class PuzzleGame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    
+    
+    
+    /****************************************************************************/
+    //======================= Bắt đầu làm từ đây ===============================//
     /****************************************************************************/
     int Counter; // Tạo biến dùng để đếm số bước đi
     /****************************************************************************/
@@ -659,6 +664,9 @@ public class PuzzleGame extends javax.swing.JFrame {
         EmptySpotChecker(btn9, btn8);
         EmptySpotChecker(btn9, btn6);
     }  
+    
+    
+    
     /****************************************************************************/ 
     // ===================== Sinh mảng ngẫu nhiên ============================= //
     /****************************************************************************/
@@ -711,6 +719,9 @@ public class PuzzleGame extends javax.swing.JFrame {
             btn9.setText(bNum[8].toString());
     }
     /****************************************************************************/
+    
+    
+    /***************************************************************************/
     // =========================== Kiểm tra win ================================//
     /****************************************************************************/
     public void checkWin(){
@@ -736,33 +747,24 @@ public class PuzzleGame extends javax.swing.JFrame {
     }
     /****************************************************************************/
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
-    // ===================== Sự kiện nút replay ============================= \\
+
+
+    /***************************************************************************/
+    // ======================= Sự kiện nút replay ============================= \\
+    /***************************************************************************/
     private void btnReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReplayActionPerformed
         // TODO add your handling code here:
+        // Khi nhấn replay thì đưa hết giá trị cũng như giao diện của game về lúc mới mở game
         resText.setText("");
         titleCheck.setVisible(false);
         resText1.setText("");
-        solution = new ArrayList<State>();
-        tracing = new ArrayList<State>();
-        steps = 0;
+        solution = new ArrayList<State>(); // Khởi tạo lại giải pháp mới
+        tracing = new ArrayList<State>(); // Khởi tạo lại mảng truy vết mới
+        steps = 0; // Gán lại bước đi bằng 0
         btnStart.setEnabled(true);
         if(btnReplay.getText().equals("New Game")){ // Kiểm tra nếu như đang là new game thì đổi lại thành replay
             btnReplay.setText("Replay");
@@ -770,31 +772,42 @@ public class PuzzleGame extends javax.swing.JFrame {
         Shuffle(); // Gọi hàm trộn mảng để tạo ra trò chơi mới
         Counter = 0; // Thiết lập lại bộ đếm bước đi bằng 0
         jlbNumberOfClicks.setText("0"); // Thiết lập lại hiển thị bước đi bằng 0.
-        btnBeFS.setEnabled(false);
-        btn1.setEnabled(false);
-        btn2.setEnabled(false);
-        btn3.setEnabled(false);
-        btn4.setEnabled(false);
-        btn5.setEnabled(false);
-        btn6.setEnabled(false);
-        btn7.setEnabled(false);
-        btn8.setEnabled(false);
-        btn9.setEnabled(false);
-        btnPrie.setEnabled(false);
-        btnNext.setEnabled(false);
+        btnBeFS.setEnabled(false); // Không cho phép bấm nút giải toán khi chưa bắt đầu game
+        btn1.setEnabled(false); // Không cho các phím số di chuyển
+        btn2.setEnabled(false); // Không cho các phím số di chuyển
+        btn3.setEnabled(false); // Không cho các phím số di chuyển
+        btn4.setEnabled(false); // Không cho các phím số di chuyển
+        btn5.setEnabled(false); // Không cho các phím số di chuyển
+        btn6.setEnabled(false); // Không cho các phím số di chuyển
+        btn7.setEnabled(false); // Không cho các phím số di chuyển
+        btn8.setEnabled(false); // Không cho các phím số di chuyển
+        btn9.setEnabled(false); // Không cho các phím số di chuyển
+        btnPrie.setEnabled(false); // Không cho các phím điều hướng di chuyển
+        btnNext.setEnabled(false); // Không cho các phím điều hướng di chuyển
     }//GEN-LAST:event_btnReplayActionPerformed
     /****************************************************************************/
-    private void btnBFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBFSActionPerformed
+    
+    
+    /***************************************************************************/
+    //====================== Sự kiện nút auto complete =========================//
+    /***************************************************************************/
+    private void btnAutoCompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoCompleteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnBFSActionPerformed
-
+    }//GEN-LAST:event_btnAutoCompleteActionPerformed
+    /***************************************************************************/
+    
+    
+    /***************************************************************************/
+    //====================== Sự kiện nhấn nút giải bằng A star =================//
+    /***************************************************************************/
     private void btnBeFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeFSActionPerformed
         // TODO add your handling code here:
-        solution.clear();
-        tracing.clear();
-        steps = 0;
-        Main mn = new Main();
-        Integer[] start = new Integer[9];
+        solution.clear(); // Xóa tất cả dữ liệu trong danh sách solution để không bị lấy lại dữ liệu cũ
+        tracing.clear(); // Xóa tất cả các dữ liệu trong danh sách truy vết để khi chạy lại giải pháp không bị lấy lại dữ liệu cũ
+        steps = 0; // Đưa lại số bước đã di chuyển bằng không
+        Main mn = new Main(); // Tạo ra main để chạy chương trình dữ liệu
+        Integer[] start = new Integer[9]; // Khởi tạo mảng chứa dữ liệu đầu vào
+        // Lấy ra các số trên các nút
         String b1 = btn1.getText();
         String b2 = btn2.getText();
         String b3 = btn3.getText();
@@ -832,50 +845,66 @@ public class PuzzleGame extends javax.swing.JFrame {
         start[7] = Integer.valueOf(b8);
         start[8] = Integer.valueOf(b9);
         
-        for(var i : tracing)
+        for(var i : tracing) // Nè là in lại những bước đi lên console để dễ debug
             i.print();
-        long time1 = 0, time2 = 0;
+        long time1 = 0, time2 = 0; // Tạo ra hai biến lưu dữ thời gian lúc bắt đầu chạy và lúc chạy xong
         try {
-            time1 = new Date().getTime();
-            mn.solution(start);
-            time2 = new Date().getTime();
+            time1 = new Date().getTime(); // Lấy thời gian lúc chạy thuật toán
+            mn.solution(start); // Gọi đến phương thức giải thuật toán trong Main
+            time2 = new Date().getTime(); // Lấy thời gian lúc chạy xong thuật toán
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(PuzzleGame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        solution = mn.temp;
-        resText.setText(Long.toString(time2 - time1) + " miliseconds");
+        solution = mn.temp; // Gán list giải pháp bằng list truy vết
+        resText.setText(Long.toString(time2 - time1) + " miliseconds"); // Hiển thị thời gian chạy lên màn hình
         titleCheck.setVisible(true);
-        resText1.setText(Integer.toString(mn.saw));
-        
+        resText1.setText(Integer.toString(mn.saw)); // Hiển thị số đỉnh đã duyệt lên màn hình
         
         int i = 0;
-        while(i < solution.size()){
+        while(i < solution.size()){ // Chạy, gán lại list giải pháp vào list truy vết, vì in ra bị ngược
             tracing.add(solution.get(i));
             ++ i;
         }
-        jlbNumberOfClicks.setText(Integer.toString(1) + " / " + Integer.toString(tracing.size()));
-        btnPrie.setEnabled(true);
-        btnNext.setEnabled(true);
-        btnBeFS.setEnabled(false);
+        jlbNumberOfClicks.setText(Integer.toString(1) + " / " + Integer.toString(tracing.size())); // In ra bước đi hiện tại trên tổng số bao nhiêu bước
+        btnPrie.setEnabled(true); // Cho phép dùng nút di chuyển để xem giải pháp
+        btnNext.setEnabled(true); // Cho phép dùng nút di chuyển để xem giải pháp
+        btnBeFS.setEnabled(false); // Ẩn nút giải toán khi đã giải rồi
     }//GEN-LAST:event_btnBeFSActionPerformed
-
+    /***************************************************************************/
+    
+    
+    /***************************************************************************/
+    //==================== Sự kiện khi khởi động cửa sổ =======================//
+    /***************************************************************************/
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         btnReplay.setText("New Game");
         titleCheck.setVisible(false);
     }//GEN-LAST:event_formWindowActivated
-
+    /***************************************************************************/
+    
+    
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton10ActionPerformed
 
+    
+    /***************************************************************************/
+    //========= Tạo ra các list dùng để lưu lại trạng thái đã truy vết =========//
+    /***************************************************************************/
     public List<State> solution = new ArrayList<State>();;
     public List<State> tracing = new ArrayList<State>();;
     public int steps = 0;
+    /***************************************************************************/
     
+    
+    /***************************************************************************/
+    //======================== Sự kiện nhấn nút start ==========================//
+    /***************************************************************************/
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         // TODO add your handling code here:
+        // Cho phép hành động với các nút
         btn1.setEnabled(true);
         btn2.setEnabled(true);
         btn3.setEnabled(true);
@@ -888,12 +917,16 @@ public class PuzzleGame extends javax.swing.JFrame {
         btnBeFS.setEnabled(true);
         btnStart.setEnabled(false);
     }//GEN-LAST:event_btnStartActionPerformed
-
+    /***************************************************************************/
+    
+    
+    /***************************************************************************/
+    //=================== Sự kiện nhấn nút bước trước đó =======================//
     private void btnPrieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrieActionPerformed
         // TODO add your handling code here:
-        if(steps < 1)
+        if(steps < 1) // Nếu bước hiện tại nhỏ hơn 1, thì gán bằng 1
             steps = 1;
-        if(steps > 0){
+        if(steps > 0){ // Nếu bước hiện tại lớn hơn 0 thì cho phép di chuyển xuống
             Integer[] bNum = Arrays.copyOfRange(tracing.get(steps - 1).data, 0, 9);
             
             if(bNum[0] == 9)
@@ -933,15 +966,19 @@ public class PuzzleGame extends javax.swing.JFrame {
             else
                 btn9.setText(bNum[8].toString());
         }
-        --steps;
-        jlbNumberOfClicks.setText(Integer.toString(steps + 1) + " / " + Integer.toString(tracing.size()));
-        System.out.println(steps);
-//        tracing.get(0).print();
+        --steps; // Giảm bước đi hiện tại
+        jlbNumberOfClicks.setText(Integer.toString(steps + 1) + " / " + Integer.toString(tracing.size())); // Hiển thị bước đi hiện tại lên màn hình
+        System.out.println(steps); // In bước đi ra màn hình để debug dễ
     }//GEN-LAST:event_btnPrieActionPerformed
-
+    /***************************************************************************/
+    
+    
+    /***************************************************************************/
+    //=================== Sự kiện nhấn nút bước tiếp theo ======================//
+    /***************************************************************************/
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        if(steps > tracing.size() - 2)
+        if(steps > tracing.size() - 2) // Giải thích tương tự như nút trước
             steps = tracing.size() - 2;
         if(steps < solution.size() - 1 ){
             Integer[] bNum = Arrays.copyOfRange(tracing.get(steps + 1).data, 0, 9);
@@ -987,17 +1024,22 @@ public class PuzzleGame extends javax.swing.JFrame {
         jlbNumberOfClicks.setText(Integer.toString(steps + 1) + " / " + Integer.toString(tracing.size()));
         System.out.println(steps);
     }//GEN-LAST:event_btnNextActionPerformed
-
+    /***************************************************************************/
+    
+    
+    /***************************************************************************/
+    //======================= Xử lý sự kiện nhấn nút thoát =====================//
     private JFrame frame;
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
-        frame = new JFrame("Exit");
-        
+        frame = new JFrame("Exit"); // Tạo ra một JFrame mới với tiêu đề là Exit
         if(JOptionPane.showConfirmDialog(frame, "Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION){
             System.exit(0);
         }
     }                                                                         
-
+    /***************************************************************************/
+    
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~ Đến đây là hết rồi ~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     /**
      * @param args the command line arguments
      */
@@ -1043,7 +1085,7 @@ public class PuzzleGame extends javax.swing.JFrame {
     private javax.swing.JButton btn7;
     private javax.swing.JButton btn8;
     private javax.swing.JButton btn9;
-    private javax.swing.JButton btnBFS;
+    private javax.swing.JButton btnAutoComplete;
     private javax.swing.JButton btnBeFS;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNext;
