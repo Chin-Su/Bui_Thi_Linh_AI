@@ -752,9 +752,21 @@ public class PuzzleGame extends javax.swing.JFrame {
         // Dùng hàm if kiểm tra xem các số đã đúng vị trí hay chưa ?
         if(b1.equals("1") && b2.equals("2") && b3.equals("3") && b4.equals("4") && 
                 b5.equals("5") && b6.equals("6") && b7.equals("7") && b8.equals("8")){
-            // Nếu đúng thì hiển thị lê hộp thông báo chiến thắng
+            // Nếu đúng thì hiển thị lên hộp thông báo chiến thắng
             JOptionPane.showMessageDialog(this, "You Win!", "Congratulation!", JOptionPane.INFORMATION_MESSAGE);
             btnReplay.setText("New Game"); // Thay đổi tên nút replay thành new game
+            btnBeFS.setEnabled(false); // Không cho phép bấm nút giải toán khi chưa bắt đầu game
+            btn1.setEnabled(false); // Không cho các phím số di chuyển
+            btn2.setEnabled(false); // Không cho các phím số di chuyển
+            btn3.setEnabled(false); // Không cho các phím số di chuyển
+            btn4.setEnabled(false); // Không cho các phím số di chuyển
+            btn5.setEnabled(false); // Không cho các phím số di chuyển
+            btn6.setEnabled(false); // Không cho các phím số di chuyển
+            btn7.setEnabled(false); // Không cho các phím số di chuyển
+            btn8.setEnabled(false); // Không cho các phím số di chuyển
+            btn9.setEnabled(false); // Không cho các phím số di chuyển
+            btnPrie.setEnabled(false); // Không cho các phím điều hướng di chuyển
+            btnNext.setEnabled(false); // Không cho các phím điều hướng di chuyển
             timer.stop(); // Dừng trình đếm thời gian
         }
         
@@ -776,6 +788,9 @@ public class PuzzleGame extends javax.swing.JFrame {
     private void btnReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReplayActionPerformed
         // TODO add your handling code here:
         // Khi nhấn replay thì đưa hết giá trị cũng như giao diện của game về lúc mới mở game
+        if(timer != null)
+            timer.stop();
+        timeCounter.setText("00 : 00 : 00");
         second = 0;
         minute = 0;
         hour = 0;
@@ -814,6 +829,9 @@ public class PuzzleGame extends javax.swing.JFrame {
     private void availableArrayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_availableArrayActionPerformed
         // TODO add your handling code here:
         // Nè là sinh ra các mảng có sẵn nhìn cái thuật toán cho dễ á, chứ mấy kia random lâu ẻ : ((
+        if(timer != null)
+            timer.stop();
+        timeCounter.setText("00 : 00 : 00");
         second = 0;
         minute = 0;
         hour = 0;
